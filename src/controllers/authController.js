@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 import { v4 as uuid } from "uuid";
-import { dbUsers } from "../dataBase/db.js";
+import { dbUsers, dbSessions } from "../dataBase/db.js";
 
 export async function signUpAuthController(req, res) {
   const { name, email, password } = req.body;
@@ -32,7 +32,7 @@ export async function signInAuthController(req, res) {
     
     const token = uuid();
 
-    await dbUsers.insertOne({ id: userFounded._id, token });
+    await dbSessions.insertOne({ id: userFounded._id, token });
     res.send(token);
   } catch (err) {
     res.send(err).status(400);
