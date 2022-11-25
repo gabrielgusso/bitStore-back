@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 import { v4 as uuid } from "uuid";
-import { dbUsers } from "../dataBase/db.js";
+import { dbUsers, dbSessions } from "../dataBase/db.js";
 
 export async function signUpAuthController(req, res) {
   const { name, email, password } = req.body;
@@ -24,15 +24,24 @@ export async function signUpAuthController(req, res) {
 
 export async function signInAuthController(req, res) {
   try {
-    const { email } = req.body;
+    const { email, password } = req.body;
     const userFounded = await dbUsers.findOne({ email });
+    
     if (!userFounded) {
       return res.sendStatus(404);
     }
-    
-    const token = uuid();
+   
+    const passwordCompared = await bcrypt.compare(password, userFounded.password);
 
-    await dbUsers.insertOne({ id: userFounded._id, token });
+    if (!passwordCompared) {
+      return res.sendStatus(401);
+    }
+
+    const token = uuid();
+    const sessions = await dbSessions.find().toArray();
+    console.log(sessions);
+
+    await dbSessions.insertOne({ id: userFounded._id, token });
     res.send(token);
   } catch (err) {
     res.send(err).status(400);
