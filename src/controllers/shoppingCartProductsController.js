@@ -1,9 +1,9 @@
-import e from "express";
-import { db, dbShoppingCart } from "../dataBase/db.js";
+import { dbShoppingCart } from "../dataBase/db.js";
 
 export async function shoppingCartProductsController(req, res) {
   try {
-    await dbShoppingCart.insertOne(req.product);
+    const product = req.product;
+    await dbShoppingCart.insertOne(product);
     res.sendStatus(200);
   } catch (err) {
     console.log(err);
@@ -13,8 +13,8 @@ export async function shoppingCartProductsController(req, res) {
 
 export async function shoppingCartGetProductsController(req, res) {
   try {
-    const name = req.name;
-    const products = await dbShoppingCart.find({ name }).toArray();
+    const id = req.id;
+    const products = await dbShoppingCart.find({idUser: id }).toArray();
     res.send(products).status(200);
   } catch (err) {
     console.log(err);
