@@ -25,3 +25,25 @@ export async function authUserShoppingCartMiddleware(req, res, next) {
     res.send(err.details.map((d) => d.message)).status(400);
   }
 }
+
+export async function authGetShoppingCartMiddleware(req, res, next) {
+  try {
+    const { authorization } = req.headers;
+    const token = authorization.replace("Bearer ", "");
+
+    const validToken = await dbSessions.findOne({token});
+
+    if (!validToken) {
+      return res.send("userNotFound").status(401);
+    }
+
+    const user = await dbUsers.findOne({_id: validToken.id});
+
+    req.name = user.name;
+
+    next();
+  } catch (err) {
+    console.log(err);
+    res.sendStatus(401);
+  }
+}
