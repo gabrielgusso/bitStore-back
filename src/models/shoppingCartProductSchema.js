@@ -12,7 +12,6 @@ export const shoppingCartSchema = Joi.object({
       "gabinete",
       "fonte"
     ),
-  name: Joi.string().min(3).required(),
   image: Joi.string().required(),
   price: Joi.string().required()
 });

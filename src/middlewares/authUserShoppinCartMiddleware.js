@@ -1,4 +1,4 @@
-import { dbSessions } from "../dataBase/db.js";
+import { dbSessions, dbUsers } from "../dataBase/db.js";
 import { shoppingCartSchema } from "../models/shoppingCartProductSchema.js";
 
 export async function authUserShoppingCartMiddleware(req, res, next) {
@@ -6,18 +6,18 @@ export async function authUserShoppingCartMiddleware(req, res, next) {
     const product = req.body;
     const { authorization } = req.headers;
     const token = authorization.replace("Bearer ", "");
-
     const userFounded = await dbSessions.findOne({ token });
 
     if (!userFounded) {
       return res.sendStatus(404);
     }
 
+    const user = await dbUsers.findOne({ _id: userFounded.id });
     const validate = await shoppingCartSchema.validateAsync(product, {
       abortEarly: false,
     });
 
-    req.product = validate;
+    req.product = { ...validate, name: user.name };
 
     next();
   } catch (err) {
