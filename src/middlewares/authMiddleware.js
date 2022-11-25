@@ -1,3 +1,4 @@
+import { dbUsers } from "../dataBase/db.js";
 import { authSignUpSchema, authSignInSchema } from "../models/authSchema.js";
 
 export async function authSignUpMiddleware(req, res, next) {
@@ -9,6 +10,11 @@ export async function authSignUpMiddleware(req, res, next) {
       password,
     };
     await authSignUpSchema.validateAsync(signUp, { abortEarly: false });
+    const userFounded = await dbUsers.findOne({email});
+
+    if(userFounded) {
+      return res.send("email already in use").status(400);
+    }
 
     next();
   } catch (err) {

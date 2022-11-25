@@ -24,13 +24,22 @@ export async function signUpAuthController(req, res) {
 
 export async function signInAuthController(req, res) {
   try {
-    const { email } = req.body;
+    const { email, password } = req.body;
     const userFounded = await dbUsers.findOne({ email });
+    
     if (!userFounded) {
       return res.sendStatus(404);
     }
-    
+   
+    const passwordCompared = await bcrypt.compare(password, userFounded.password);
+
+    if (!passwordCompared) {
+      return res.sendStatus(401);
+    }
+
     const token = uuid();
+    const sessions = await dbSessions.find().toArray();
+    console.log(sessions);
 
     await dbSessions.insertOne({ id: userFounded._id, token });
     res.send(token);
