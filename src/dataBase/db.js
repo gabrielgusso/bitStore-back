@@ -12,3 +12,4 @@ try {
 }
 
 export const db = mongoClient.db("bitStore");
+export const dbUsers = db.collection("users");
