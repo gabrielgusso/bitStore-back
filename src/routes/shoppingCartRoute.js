@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { shoppingCartGetProductsController, shoppingCartProductsController } from "../controllers/shoppingCartProductsController.js";
-import { authGetShoppingCartMiddleware, authUserShoppingCartMiddleware } from "../middlewares/authUserShoppinCartMiddleware.js";
+import { authGetShoppingCartMiddleware, authUserShoppingCartMiddleware } from "../middlewares/authUserShoppingCartMiddleware.js";
 
 export const shoppingCart = Router();
 
