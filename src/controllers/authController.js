@@ -38,8 +38,6 @@ export async function signInAuthController(req, res) {
     }
 
     const token = uuid();
-    const sessions = await dbSessions.find().toArray();
-    console.log(sessions);
 
     await dbSessions.insertOne({ id: userFounded._id, token });
     res.send(token);
