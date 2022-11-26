@@ -14,7 +14,7 @@ export async function signUpAuthController(req, res) {
   };
 
   try {
-    await dbUsers.insertOne(user);
+    // await dbUsers.insertOne(user);
     res.sendStatus(200);
   } catch (err) {
     console.log(err);
