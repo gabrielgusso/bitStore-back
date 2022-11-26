@@ -12,11 +12,9 @@ export async function productsController(req, res) {
         .collection("products")
         .find({ category: category })
         .toArray()
-      console.log(`A categoria ecolhida foi: ${category}`)
       return res.send(productsCategory)
     }
     const products = await db.collection("products").find({}).toArray()
-    console.log("sem categoria definida")
     return res.send(products)
   } catch (error) {
     console.log(error)

@@ -1,3 +1,4 @@
+import { ObjectId } from "mongodb";
 import { db, dbSessions, dbUsers } from "../dataBase/db.js";
 import { shoppingCartSchema } from "../models/shoppingCartProductSchema.js";
 
@@ -14,9 +15,12 @@ export async function authUserShoppingCartMiddleware(req, res, next) {
 
     const user = await dbUsers.findOne({ _id: userFounded.id });
 
+    const productPrice = await db.collection("products").findOne({_id: ObjectId(idProduct)})
+
     const product = {
       idUser: user._id,
-      idProduct
+      idProduct,
+      price: productPrice.price
     }
 
     const validate = await shoppingCartSchema.validateAsync(product, {
@@ -28,7 +32,6 @@ export async function authUserShoppingCartMiddleware(req, res, next) {
 
     next();
   } catch (err) {
-    err.details.map((d) => console.log(d.message));
     res.send(err.details.map((d) => d.message)).status(400);
   }
 } 
@@ -50,7 +53,6 @@ export async function authGetShoppingCartMiddleware(req, res, next) {
 
     next();
   } catch (err) {
-    console.log(err);
     res.sendStatus(401);
   }
 }

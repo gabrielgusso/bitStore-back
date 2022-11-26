@@ -6,7 +6,6 @@ export async function shoppingCartProductsController(req, res) {
     await dbShoppingCart.insertOne(product);
     res.sendStatus(200);
   } catch (err) {
-    console.log(err);
     res.sendStatus(401);
   }
 }
@@ -17,7 +16,6 @@ export async function shoppingCartGetProductsController(req, res) {
     const products = await dbShoppingCart.find({idUser: id }).toArray();
     res.send(products).status(200);
   } catch (err) {
-    console.log(err);
     res.sendStatus(401);
   }
 }
