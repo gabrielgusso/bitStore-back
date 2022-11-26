@@ -13,7 +13,7 @@ export async function authSignUpMiddleware(req, res, next) {
     const userFounded = await dbUsers.findOne({email});
 
     if(userFounded) {
-      return res.send("email already in use").status(400);
+      return res.status(401).send("email already in use");
     }
 
     next();
