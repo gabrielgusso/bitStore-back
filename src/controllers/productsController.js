@@ -1,12 +1,21 @@
 import { db } from "../dataBase/db.js"
 import { productSchema } from "../models/productSchema.js"
+import { ObjectId } from 'mongodb'
 import dotenv from "dotenv"
 dotenv.config()
 
 export async function productsController(req, res) {
   const category = req.query.category
+  const productId = req.query.productId
 
   try {
+    if (productId) {
+      const product = await db
+        .collection("products")
+        .find({ _id: ObjectId(productId) })
+        .toArray()
+      return res.send(product)
+    }
     if (category) {
       const productsCategory = await db
         .collection("products")

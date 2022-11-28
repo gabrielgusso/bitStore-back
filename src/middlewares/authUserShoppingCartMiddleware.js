@@ -27,8 +27,9 @@ export async function authUserShoppingCartMiddleware(req, res, next) {
       abortEarly: false,
     });
 
-
+    const produto = await db.collection("products").findOne({_id: ObjectID(idProduct)});
     req.product = validate;
+    req.infos = produto
 
     next();
   } catch (err) {
