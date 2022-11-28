@@ -12,8 +12,7 @@ export async function productsController(req, res) {
     if (productId) {
       const product = await db
         .collection("products")
-        .find({ _id: ObjectId(productId) })
-        .toArray()
+        .findOne({ _id: ObjectId(productId) })
       return res.send(product)
     }
     if (category) {
