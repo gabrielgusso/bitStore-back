@@ -1,4 +1,4 @@
-import { dbUsers } from "../dataBase/db.js";
+import { db, dbSessions, dbUsers } from "../dataBase/db.js";
 import { authSignUpSchema, authSignInSchema } from "../models/authSchema.js";
 
 export async function authSignUpMiddleware(req, res, next) {
@@ -10,9 +10,9 @@ export async function authSignUpMiddleware(req, res, next) {
       password,
     };
     await authSignUpSchema.validateAsync(signUp, { abortEarly: false });
-    const userFounded = await dbUsers.findOne({email});
+    const userFounded = await dbUsers.findOne({ email });
 
-    if(userFounded) {
+    if (userFounded) {
       return res.status(401).send("email already in use");
     }
 
@@ -29,5 +29,22 @@ export async function authSignInMiddleware(req, res, next) {
     next();
   } catch (err) {
     res.send(err.details.map((d) => d.message)).status(400);
+  }
+}
+
+export async function authDeleteShoppingCartMiddleware(req, res, next) {
+  try {
+    const { authorization } = req.headers;
+    const products = await db.collection("products").find().toArray();
+    console.log(products);
+
+    if (!authorization) {
+      res.send("Token required").status(401);
+    }
+
+    next();
+  } catch (err) {
+    console.log(err);
+    res.sendStatus(404);
   }
 }
