@@ -14,7 +14,7 @@ export async function signUpAuthController(req, res) {
   };
 
   try {
-    // await dbUsers.insertOne(user);
+    await dbUsers.insertOne(user);
     res.sendStatus(200);
   } catch (err) {
     console.log(err);
@@ -38,8 +38,6 @@ export async function signInAuthController(req, res) {
     }
 
     const token = uuid();
-    const sessions = await dbSessions.find().toArray();
-    console.log(sessions);
 
     await dbSessions.insertOne({ id: userFounded._id, token });
     res.send(token);
