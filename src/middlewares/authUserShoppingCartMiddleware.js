@@ -8,6 +8,7 @@ export async function authUserShoppingCartMiddleware(req, res, next) {
     const token = authorization.replace("Bearer ", "");
     const userFounded = await dbSessions.findOne({ token });
     const { idProduct } = req.body;
+    console.log(authorization);
 
     if (!userFounded) {
       return res.sendStatus(404);
@@ -27,12 +28,13 @@ export async function authUserShoppingCartMiddleware(req, res, next) {
       abortEarly: false,
     });
 
-    const produto = await db.collection("products").findOne({_id: ObjectID(idProduct)});
+    const produto = await db.collection("products").findOne({_id: ObjectId(idProduct)});
     req.product = validate;
     req.infos = produto
 
     next();
   } catch (err) {
+    console.log(err);
     res.send(err.details.map((d) => d.message)).status(400);
   }
 } 
