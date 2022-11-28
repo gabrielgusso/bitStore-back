@@ -8,7 +8,6 @@ export async function authUserShoppingCartMiddleware(req, res, next) {
     const token = authorization.replace("Bearer ", "");
     const userFounded = await dbSessions.findOne({ token });
     const { idProduct } = req.body;
-    console.log(authorization);
 
     if (!userFounded) {
       return res.sendStatus(404);
