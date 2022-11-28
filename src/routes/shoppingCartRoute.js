@@ -9,4 +9,4 @@ shoppingCart.post("/shoppingCart", authUserShoppingCartMiddleware, shoppingCartP
 
 shoppingCart.get("/shoppingCart", authGetShoppingCartMiddleware, shoppingCartGetProductsController);
 
-shoppingCart.delete("/shoppingCart", authDeleteShoppingCartMiddleware, shoppingCartDeleteProductController)
+shoppingCart.delete("/shoppingCart/:id", authDeleteShoppingCartMiddleware, shoppingCartDeleteProductController)
