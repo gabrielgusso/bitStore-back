@@ -35,11 +35,10 @@ export async function authSignInMiddleware(req, res, next) {
 export async function authDeleteShoppingCartMiddleware(req, res, next) {
   try {
     const { authorization } = req.headers;
-    const products = await db.collection("products").find().toArray();
-    console.log(products);
-
+    console.log(req.body);
+    console.log(authorization);
     if (!authorization) {
-      res.send("Token required").status(401);
+      return res.send("Token required").status(401);
     }
 
     next();
