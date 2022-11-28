@@ -1,9 +1,10 @@
-import { dbShoppingCart } from "../dataBase/db.js";
+import { db, dbShoppingCart } from "../dataBase/db.js";
 
 export async function shoppingCartProductsController(req, res) {
   try {
     const product = req.product;
-    await dbShoppingCart.insertOne(product);
+    const infos = req.infos;
+    await dbShoppingCart.insertOne({...product, name: infos.name, price: infos.price, image: infos.image});
     res.sendStatus(200);
   } catch (err) {
     console.log(err);

@@ -1,3 +1,4 @@
+import { ObjectID } from "bson";
 import { db, dbSessions, dbUsers } from "../dataBase/db.js";
 import { shoppingCartSchema } from "../models/shoppingCartProductSchema.js";
 
@@ -23,8 +24,9 @@ export async function authUserShoppingCartMiddleware(req, res, next) {
       abortEarly: false,
     });
 
-
+    const produto = await db.collection("products").findOne({_id: ObjectID(idProduct)});
     req.product = validate;
+    req.infos = produto
 
     next();
   } catch (err) {
